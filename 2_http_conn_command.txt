@@ -1,0 +1,54 @@
+curl -i -X POST -H "Accept:application/json" \
+    -H  "Content-Type:application/json" http://localhost:8083/connectors/ \
+    -d '{
+  "name": "mysql_cdc",
+  "config": {
+    "connector.class": "io.debezium.connector.mysql.MySqlConnector",
+    "tasks.max": "1",
+    "database.hostname": "mysql",
+    "database.port": "3306",
+    "database.user": "root",
+    "database.password": "A(^(%@123KLHadasda00",
+    "database.server.name": "mongodb",
+    "database.server.id": "1",
+    "database.history.kafka.bootstrap.servers": "broker:29092",
+    "database.history.kafka.topic": "mysql_history",
+    "include.schema.changes": true,
+    "include.query": true,
+    "table.ignore.builtin": true,
+    "database.whitelist": "kafka",
+    "message.key.columns": "kafka.fin_account:account_id;kafka.fin_disp:disp_id;kafka.fin_loan:loan_id;kafka.fin_order:order_id;kafka.fin_trans:trans_id"
+  }
+}'
+
+
+curl -i -X POST -H "Accept:application/json" \
+    -H  "Content-Type:application/json" http://localhost:8083/connectors/ \
+    -d '{
+  "name": "mongodb_conn",
+  "config": {
+    "topics": "FIN_ACCOUNT_TRANS_MONGODB",
+    "connector.class": "com.mongodb.kafka.connect.MongoSinkConnector",
+    "tasks.max": "1",
+    "connection.uri": "mongodb+srv://confluent:VLyiusf6bDWeimm@cluster0.d7axt.mongodb.net/blog",
+    "database": "blog",
+    "collection": "confluent",
+    "confluent.license.inject.into.connectors":"false"
+  }
+}'
+
+curl -i -X POST -H "Accept:application/json" \
+    -H  "Content-Type:application/json" http://localhost:8083/connectors/ \
+    -d '{
+  "name": "mongodb_conn_agg",
+  "config": {
+    "topics": "FIN_ACCOUNT_TRANS_AGG_MONGODB",
+    "connector.class": "com.mongodb.kafka.connect.MongoSinkConnector",
+    "tasks.max": "1",
+    "connection.uri": "mongodb+srv://confluent:VLyiusf6bDWeimm@cluster0.d7axt.mongodb.net/blog",
+    "database": "blog",
+    "collection": "trans_list",
+    "confluent.license.inject.into.connectors":"false"
+  }
+}'
+

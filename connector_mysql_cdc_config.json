@@ -1,0 +1,20 @@
+{
+  "name": "mysql_cdc",
+  "config": {
+    "connector.class": "io.debezium.connector.mysql.MySqlConnector",
+    "tasks.max": "1",
+    "database.hostname": "mysql",
+    "database.port": "3306",
+    "database.user": "root",
+    "database.password": "A(^(%@123KLHadasda00",
+    "database.server.name": "mongo",
+    "database.server.id": "1",
+    "database.history.kafka.bootstrap.servers": "broker:29092",
+    "database.history.kafka.topic": "mysql_history",
+    "include.schema.changes": true,
+    "include.query": true,
+    "table.ignore.builtin": true,
+    "database.whitelist": "kafka",
+    "message.key.columns": "kafka.fin_account:account_id;kafka.fin_disp:disp_id;kafka.fin_loan:loan_id;kafka.fin_order:order_id;kafka.fin_trans:trans_id"
+  }
+}
