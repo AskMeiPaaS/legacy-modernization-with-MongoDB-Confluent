@@ -89,8 +89,6 @@ CREATE STREAM fin_order_trans_mongodb AS
     WITHIN 1 DAYS
     ON o.account_id = t.account_id;
 
--- Account with two transactions - transaction should be a list of objects. GitHub: pareshsarafmdb
-
 -- Join two streams with struct
 
 CREATE STREAM fin_account_trans_mongodb AS
