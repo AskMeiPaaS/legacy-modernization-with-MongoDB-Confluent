@@ -89,14 +89,6 @@ CREATE STREAM fin_order_trans_mongodb AS
     WITHIN 1 DAYS
     ON o.account_id = t.account_id;
 
--- Create aggregation table
-
-CREATE TABLE fin_order_trans_agg_mongodb AS
-    SELECT account_id,
-            collect_list(transaction_id)
-    FROM FIN_ORDER_TRANS_MONGODB
-    group by account_id;
-
 -- Account with two transactions - transaction should be a list of objects. GitHub: pareshsarafmdb
 
 -- Join two streams with struct
@@ -112,14 +104,3 @@ CREATE STREAM fin_account_trans_mongodb AS
     FROM fin_account_mongodb a INNER JOIN fin_trans_mongodb t
     WITHIN 7 DAYS
     ON a.account_id = t.account_id;
-
-
-
--- Create aggregation table, currently only works for simple types (not Map, Array, or Struct)
-
-CREATE TABLE fin_account_trans_agg_mongodb AS
-    SELECT account_id key,
-            AS_VALUE(account_id) as account_id,
-            collect_list(trans_id) as trans_id_list
-    FROM FIN_ACCOUNT_TRANS_MONGODB
-    group by account_id;
