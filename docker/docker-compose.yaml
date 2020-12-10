@@ -151,7 +151,7 @@ services:
       KSQL_KSQL_LOGGING_PROCESSING_TOPIC_AUTO_CREATE: 'true'
       KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: 'true'
     volumes:
-      - ./scripts:/
+      - ./scripts:.
 
   ksqldb-cli:
     image: confluentinc/cp-ksqldb-cli:6.0.0
