@@ -69,7 +69,7 @@ Get a KSQL CLI session:
 docker exec -it ksqldb-cli bash -c 'echo -e "\n\n⏳ Waiting for KSQL to be available before launching CLI\n"; while : ; do curl_status=$(curl -s -o /dev/null -w %{http_code} http://ksqldb-server:8088/info) ; echo -e $(date) " KSQL server listener HTTP state: " $curl_status " (waiting for 200)" ; if [ $curl_status -eq 200 ] ; then  break ; fi ; sleep 5 ; done ; ksql http://ksqldb-server:8088'
 ```
 
-Execute (https://github.com/AskMeiPaaS/confluent-mongodb-financial-data-sync/blob/main/3_create_table_select.ksql) in ksqlDB prompt.
+Execute [script](/3_create_table_select.ksql) in ksqlDB prompt.
 
 Validate the stream on flow. http://localhost:9021/clusters --> Cluster --> ksqlDB --> ksqldb1 --> flow
 ![Data Flow](/docs/dataflow.png)
