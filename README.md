@@ -51,6 +51,13 @@ curl -i -X POST -H "Accept:application/json" \
   }
 }'
 ```
+Check connector status: 
+
+```
+curl -s "http://localhost:8083/connectors?expand=info&expand=status" | \
+         jq '. | to_entries[] | [ .value.info.type, .key, .value.status.connector.state,.value.status.tasks[].state,.value.info.config."connector.class"]|join(":|:")' | \
+         column -s : -t| sed 's/\"//g'| sort
+```
 
 ## Connect to ksqlDB to define the data pipeline
 Get a KSQL CLI session:
@@ -58,5 +65,31 @@ Get a KSQL CLI session:
 docker exec -it ksqldb-cli bash -c 'echo -e "\n\n⏳ Waiting for KSQL to be available before launching CLI\n"; while : ; do curl_status=$(curl -s -o /dev/null -w %{http_code} http://ksqldb-server:8088/info) ; echo -e $(date) " KSQL server listener HTTP state: " $curl_status " (waiting for 200)" ; if [ $curl_status -eq 200 ] ; then  break ; fi ; sleep 5 ; done ; ksql http://ksqldb-server:8088'
 ```
 
-Execute ![script](/3_create_table_select.ksql) in ksqlDB prompt: 
+Execute ![Script](/3_create_table_select.ksql) in ksqlDB prompt.
 
+## Create MongoDB Connector
+"Replace the userid, password and url in the connection.uri with your cluster details."
+```
+curl -i -X POST -H "Accept:application/json" \
+    -H  "Content-Type:application/json" http://localhost:8083/connectors/ \
+    -d '{
+  "name": "mongodb_conn",
+  "config": {
+    "topics": "FIN_ACCOUNT_TRANS_MONGODB",
+    "connector.class": "com.mongodb.kafka.connect.MongoSinkConnector",
+    "tasks.max": "1",
+    "connection.uri": "mongodb+srv://confluent:Password@cluster0.d7axt.mongodb.net/blog",
+    "database": "blog",
+    "collection": "confluent",
+    "confluent.license.inject.into.connectors":"false"
+  }
+}'
+
+```
+Check connector status: 
+
+```
+curl -s "http://localhost:8083/connectors?expand=info&expand=status" | \
+         jq '. | to_entries[] | [ .value.info.type, .key, .value.status.connector.state,.value.status.tasks[].state,.value.info.config."connector.class"]|join(":|:")' | \
+         column -s : -t| sed 's/\"//g'| sort
+```
