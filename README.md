@@ -58,6 +58,9 @@ curl -s "http://localhost:8083/connectors?expand=info&expand=status" | \
          jq '. | to_entries[] | [ .value.info.type, .key, .value.status.connector.state,.value.status.tasks[].state,.value.info.config."connector.class"]|join(":|:")' | \
          column -s : -t| sed 's/\"//g'| sort
 ```
+Once the connector is running, do observe the corresponding topics created for tables in the broker through Confluent Control Center by logging to it https://localhost:9021/cluters --> Cluster --> Topics.
+Example:
+![Topics](/docs/topics.png)
 
 ## Connect to ksqlDB to define the data pipeline
 Get a KSQL CLI session:
