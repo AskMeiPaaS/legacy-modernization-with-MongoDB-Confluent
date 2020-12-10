@@ -1,7 +1,10 @@
+-- this flag tells Kafka where to start reading offsets.
 set 'auto.offset.reset'='earliest';
 
+-- define account stream
 create stream fin_account WITH (kafka_topic='mongodb.kafka.fin_account', value_format='avro');
 
+-- capture account change data in stream
 create stream fin_account_mongodb AS 
         SELECT 
             after -> account_id AS account_id,
@@ -10,9 +13,10 @@ create stream fin_account_mongodb AS
             after -> frequency as frequency
         FROM fin_account;
 
-
+-- define disp stream
 create stream fin_disp WITH (kafka_topic='mongodb.kafka.fin_disp', value_format='avro');
 
+-- capture disp change data in stream
 create stream fin_disp_mongodb AS 
         SELECT 
             after -> disp_id AS disp_id,
@@ -21,21 +25,10 @@ create stream fin_disp_mongodb AS
             after -> disp_type as disp_type
         FROM fin_disp;
 
---create table fin_loan (loan_id primary key) WITH (kafka_topic='mongodb.kafka.fin_loan', value_format='avro');
-
--- create table fin_loan_mongodb AS 
---         SELECT 
---             after -> loan_id AS loan_id,
---             after -> account_id AS account_id,
---             after -> granted_date as granted_date,
---             after -> amount as amount,
---             after -> duration AS duration,
---             after -> payments as payments,
---             after -> status as status
---         FROM fin_loan;
-
+-- define loan stream
 create stream fin_loan WITH (kafka_topic='mongodb.kafka.fin_loan', value_format='avro');
 
+-- capture loan change data in stream
 create stream fin_loan_mongodb AS 
         SELECT 
             after -> loan_id AS loan_id,
@@ -47,8 +40,10 @@ create stream fin_loan_mongodb AS
             after -> status as status
         from fin_loan;
 
+-- define order stream
 create stream fin_order WITH (kafka_topic='mongodb.kafka.fin_order', value_format='avro');
 
+-- capture loan change data in stream
 create stream fin_order_mongodb AS 
         SELECT 
             after -> order_id AS order_id,
@@ -59,8 +54,10 @@ create stream fin_order_mongodb AS
             after -> category as category
         from fin_order;
 
+-- define trans stream
 create stream fin_trans WITH (kafka_topic='mongodb.kafka.fin_trans', value_format='avro');
 
+-- capture trans change data in stream
 create stream fin_trans_mongodb AS 
         SELECT 
             after -> trans_id AS trans_id,
@@ -75,22 +72,7 @@ create stream fin_trans_mongodb AS
             after -> other_account_id as other_account_id
         from fin_trans;
 
--- Join two streams
-
-CREATE STREAM fin_order_trans_mongodb AS
-    SELECT o.order_id AS order_id,
-           --TIMESTAMPTOSTRING(o.rowtime, 'yyyy-MM-dd HH:mm:ss', 'UTC') AS order_ts,
-           o.account_id as account_id,
-           o.bank_to as bank,
-           t.trans_id AS transaction_id,
-           --TIMESTAMPTOSTRING(s.rowtime, 'yyyy-MM-dd HH:mm:ss', 'UTC') AS shipment_ts,
-           t.category as category
-    FROM fin_order_mongodb o INNER JOIN fin_trans_mongodb t
-    WITHIN 1 DAYS
-    ON o.account_id = t.account_id;
-
--- Join two streams with struct
-
+-- create a join streams with trans object
 CREATE STREAM fin_account_trans_mongodb AS
     SELECT a.account_id key,
             AS_VALUE(a.account_id) as account_id,
