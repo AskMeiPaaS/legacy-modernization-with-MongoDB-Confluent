@@ -71,7 +71,7 @@ docker exec -it ksqldb-cli bash -c 'echo -e "\n\n⏳ Waiting for KSQL to be avai
 
 Execute [script](/3_create_table_select.ksql) in ksqlDB prompt.
 
-Validate the stream on flow. http://localhost:9021/clusters --> Cluster --> ksqlDB --> ksqldb1 --> flow
+Validate the stream generation through the flow GUI. http://localhost:9021/clusters --> Cluster --> ksqlDB --> ksqldb1 --> flow
 ![Data Flow](/docs/dataflow.png)
 
 ## Create MongoDB Connector
