@@ -1,5 +1,6 @@
-# confluent-mongodb-financial-data-sync
-Contains demo asset for Confluent Mongodb financial data sync
+# Legacy Modernization with MongoDB & Confluent
+It demonstrates how MongoDB and Confluent together can help organizations build Robust Operational Data Layer. How to do change data capture migration and real time data synchronization from relational database, MySQL to MongoDB Atlas using Confluent Platform and MongoDB Connector for Apache Kafka.
+
 ## Architectural overview
 
 A demo to move change data from a relational database to MongoDB using Confluent and Kafka.
