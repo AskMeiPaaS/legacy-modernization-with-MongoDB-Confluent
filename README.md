@@ -7,7 +7,7 @@ A demo to move change data from a relational database to MongoDB using Confluent
 ![Architecture](/docs/architecture.png)
 
 
-The datapipeline
+The data pipeline
 ![Data Flow](/docs/dataflow.png)
 
 ## Prerequisites & setup
@@ -103,3 +103,13 @@ curl -s "http://localhost:8083/connectors?expand=info&expand=status" | \
 ## Validate data in MongoDB
 Login to MongoDB Atlas account and validate. Example:
 ![MongoDB Collection](/docs/mongodb.png)
+
+## Add transactions to MySQL.
+To mimic the real-time scenario, connect to mysql node and push a few transactions.
+```
+docker exec -it mysql mysql -uroot -p'A(^(%@123KLHadasda00'
+```
+
+Execute [script](/4_load_trans.sql) in mysql prompt
+
+Watch the new data getting ingested into the target in real-time by refreshing the page.
