@@ -4,9 +4,9 @@
     "topics": "FIN_ACCOUNT_TRANS_MONGODB",
     "connector.class": "com.mongodb.kafka.connect.MongoSinkConnector",
     "tasks.max": "1",
-    "connection.uri": "mongodb+srv://confluent:VLyiusf6bDWeimm@cluster0.d7axt.mongodb.net/blog",
-    "database": "blog",
-    "collection": "confluent",
+    "connection.uri": "mongodb+srv://confluent:Apple#246@cluster0.d7axt.mongodb.net/FinancialData",
+    "database": "FinancialData",
+    "collection": "Transactions",
     "confluent.license.inject.into.connectors":"false"
   }
 }
