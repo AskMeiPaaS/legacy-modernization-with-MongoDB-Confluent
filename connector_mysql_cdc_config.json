@@ -7,7 +7,7 @@
     "database.port": "3306",
     "database.user": "root",
     "database.password": "A(^(%@123KLHadasda00",
-    "database.server.name": "mongo",
+    "database.server.name": "mongodb",
     "database.server.id": "1",
     "database.history.kafka.bootstrap.servers": "broker:29092",
     "database.history.kafka.topic": "mysql_history",
