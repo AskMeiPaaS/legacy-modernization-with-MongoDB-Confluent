@@ -74,8 +74,12 @@ Execute [script](/3_create_table_select.ksql) in ksqlDB prompt.
 Validate the stream generation through the flow GUI. http://localhost:9021/clusters --> Cluster --> ksqlDB --> ksqldb1 --> flow
 ![Data Flow](/docs/dataflow.png)
 
+## Create cluster on MongoDB Atlas
+* Follow the steps [here](https://docs.atlas.mongodb.com/tutorial/create-new-cluster)  to create a new database cluster
+* Configure database user, IP Whitelist and copy the connection string. Follow the steps [here](https://docs.atlas.mongodb.com/driver-connection)
+
 ## Create MongoDB Connector
-Replace the userid, password and url in the connection.uri with your cluster details.
+Set the connection.uri to one copied in the previous step.
 ```
 curl -i -X POST -H "Accept:application/json" \
     -H  "Content-Type:application/json" http://localhost:8083/connectors/ \
@@ -86,8 +90,8 @@ curl -i -X POST -H "Accept:application/json" \
     "connector.class": "com.mongodb.kafka.connect.MongoSinkConnector",
     "tasks.max": "1",
     "connection.uri": "mongodb+srv://confluent:Password@cluster0.d7axt.mongodb.net/blog",
-    "database": "blog",
-    "collection": "confluent",
+    "database": "FinancialData",
+    "collection": "Transactions",
     "confluent.license.inject.into.connectors":"false"
   }
 }'
@@ -101,7 +105,7 @@ curl -s "http://localhost:8083/connectors?expand=info&expand=status" | \
          column -s : -t| sed 's/\"//g'| sort
 ```
 ## Validate data in MongoDB
-Login to MongoDB Atlas account and validate. Example:
+Login to MongoDB Atlas account and validate whether you can see the data in the cluster. Example:
 ![MongoDB Collection](/docs/mongodb.png)
 
 ## Add transactions to MySQL.
@@ -113,3 +117,13 @@ docker exec -it mysql mysql -uroot -p'A(^(%@123KLHadasda00'
 Execute [script](/4_load_trans.sql) in mysql prompt
 
 Watch the new data getting ingested into the target in real-time by refreshing the page.
+
+## Setup Atlas online archive
+* Follow the steps [here](https://docs.mongodb.com/datalake/tutorial/getting-started) to setup Atlas datalake.
+* Set up online archival for FinancialData.Transactions collection. Follow the steps [here](https://docs.atlas.mongodb.com/online-archive/configure-online-archive)
+![Archival](/docs/archival.png)
+
+## Setup Charts
+* Launch MongoDB Charts. Follow the steps [here](https://docs.mongodb.com/charts/master/launch-charts)
+* You can try building different types of charts. Below is an example Circular chart on Transactions collection. 
+![Charts](/docs/charts.png)
